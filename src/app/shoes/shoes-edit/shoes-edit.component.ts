@@ -12,7 +12,7 @@ export class ShoesEditComponent implements OnInit {
 
   id!:number;
   editMode = false;
-  productForm!: FormGroup
+  productForm!: FormGroup;
 
   constructor(private route: ActivatedRoute,
               private shoesService: ShoesService,

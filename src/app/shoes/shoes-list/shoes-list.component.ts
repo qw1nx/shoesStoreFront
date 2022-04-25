@@ -13,7 +13,7 @@ import {Subscription} from "rxjs";
 export class ShoesListComponent implements OnInit {
 
   shoes!: ShoeModel[];
-  subscription!: Subscription;
+  subscription: Subscription = new Subscription();
 
   constructor(private shoesService: ShoesService,
               private router: Router,
@@ -22,13 +22,15 @@ export class ShoesListComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.subscription = this.shoesService.shoesChanged
-    //   .subscribe(
-    //     (recipes: ShoeModel[]) => {
-    //       this.shoes = recipes;
-    //     }
-    //   );
-    // this.shoes = this.shoesService.getProducts();
+    this.shoesService.loadProductsFromDb()
+    this.shoes = this.shoesService.getProducts();
+    this.subscription = this.shoesService.shoesChanged
+      .subscribe(
+        (recipes: ShoeModel[]) => {
+          this.shoes = recipes;
+        }
+      );
+    this.shoes = this.shoesService.getProducts();
   }
 
   onNewRecipe() {

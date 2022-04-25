@@ -11,17 +11,18 @@ export interface AuthResponseData {
   accessToken: string
 }
 
-@Injectable({providedIn: 'root'})
+@Injectable()
 export class AuthService{
-  private url: string = 'http://localhost:3030';
-  user = new BehaviorSubject<UserModel | unknown>(null);
+  private url: string = 'http://localhost:3030/users';
+  // @ts-ignore
+  user = new BehaviorSubject<UserModel>(null);
 
   constructor( private http: HttpClient, private router: Router) {
   }
 
 
   signup(email: string, password: string){
-    return this.http.post<AuthResponseData>(this.url,
+    return this.http.post<AuthResponseData>(this.url + '/register',
       {
         email: email,
         password: password
@@ -32,7 +33,7 @@ export class AuthService{
   }
 
   login(email: string, password: string){
-    return this.http.post<AuthResponseData>(this.url,
+    return this.http.post<AuthResponseData>(this.url + '/login',
       {
         email: email,
         password: password
@@ -42,15 +43,15 @@ export class AuthService{
   }
 
   logout(){
-    this.user.next(null);
+    //this.user.next(null);
     this.router.navigate(['/auth']);
-    localStorage.removeItem('userData');
+    localStorage.removeItem('user');
   }
 
   private handleAuthentication(email: string, userId: string, token: string, isAdmin: boolean){
     const user = new UserModel(email, userId, isAdmin, token)
     this.user.next(user);
-    localStorage.setItem('userData', JSON.stringify(user))
+    localStorage.setItem('user', JSON.stringify(user))
   }
 
   private handleError(errorRes: HttpErrorResponse){

@@ -4,7 +4,7 @@ import {Subject} from "rxjs";
 import {CartService} from "../cart/cart.service";
 import {DataStorageService} from "../shared/data-storage.service";
 
-@Injectable({providedIn: 'root'})
+@Injectable()
 export class ShoesService {
   shoesChanged = new Subject<ShoeModel[]>();
 
@@ -13,16 +13,23 @@ export class ShoesService {
   constructor(private cartService: CartService, private dataService: DataStorageService) { }
 
 
-  setProducts(shoesNew: ShoeModel[]){
-    this.shoes = shoesNew;
-    this.shoesChanged.next(this.shoes.slice());
-  }
-
   addProduct(product: ShoeModel){
     this.shoes.push(product);
     this.shoesChanged.next(this.shoes.slice())
-    this.dataService.saveOneProduct(product);
+    this.dataService.saveProduct(product);
   }
+
+  loadProductsFromDb(){
+    this.shoes = this.dataService.fetchProductsTest()
+  }
+  //////////////////////////////////////////////////////////////////////////////////////////////
+
+  // setProducts(shoesNew: ShoeModel[]){
+  //   this.shoes = shoesNew;
+  //   this.shoesChanged.next(this.shoes.slice());
+  // }
+
+
 
   updateProduct(id: number, product: ShoeModel){
     this.shoes[id] = product;
@@ -37,7 +44,7 @@ export class ShoesService {
   }
 
   getProducts(){
-    console.log(this.shoes);
+    console.log('this is in getProducts in shoe service',this.shoes);
     return this.shoes.slice();
   }
 

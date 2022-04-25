@@ -1,32 +1,43 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {ShoesService} from "../shoes/shoes.service";
 import {AuthService} from "../auth/auth.service";
 import {ShoeModel} from "../shoes/shoe.model";
 import {map, pipe} from "rxjs";
 
 @Injectable({providedIn: 'root'})
 export class DataStorageService {
+
+  private dataFromDb:any;
+
 private url:string = 'http://localhost:3030'
   constructor(
     private http: HttpClient,
-    private shoesService: ShoesService,
     private authService: AuthService) {}
 
-  saveProducts(){
-    const recipes = this.shoesService.getProducts();
-    this.http.put(this.url + '/catalog', recipes).subscribe(response => {
-      console.log(response);
-    });
-  }
+  // saveProducts(){
+  //   const recipes = this.shoesService.getProducts();
+  //   this.http.put(this.url + '/catalog', recipes).subscribe(response => {
+  //     console.log(response);
+  //   });
+  // }
+  //
+  // saveOneProduct(product: ShoeModel){
+  // this.http.post(this.url + '/catalog', product).subscribe(response => {
+  //   console.log(response);
+  // })
+  // }
 
-  saveOneProduct(product: ShoeModel){
-  this.http.post(this.url + '/catalog', product).subscribe(response => {
-    console.log(response);
-  })
+  saveProduct(product: ShoeModel){
+    this.http.post(this.url + '/catalog', product).subscribe(response => {
+      console.log(response);
+    })
   }
 
   fetchProductsTest(){
+    this.http.get(this.url + '/catalog').subscribe(response => {
+      this.dataFromDb = response;
+    })
+    return this.dataFromDb;
   }
 
   // fetchProducts(){

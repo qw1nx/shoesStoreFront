@@ -1,11 +1,12 @@
 <div class="row">
   <div class="col-xs-12 text-center">
-    <button class="btn btn-primary">New Recipe</button>
+    <button class="btn btn-primary" (click)="onNewRecipe()">New Recipe</button>
+<!--    <li class="btn"><a routerLink="catalog/new">New Product</a></li>-->
   </div>
 </div>
 <hr>
 <div class="row">
-  <div class="col-xs-9">
+  <div class="col-xs-8">
     <app-shoes-item *ngFor="let i of shoes"></app-shoes-item>
   </div>
 </div>
